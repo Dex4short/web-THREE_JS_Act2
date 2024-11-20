@@ -14,7 +14,7 @@ const scene = new THREE.Scene();
 const font_link = "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json";
 const fontLoader = new FontLoader();
 fontLoader.load(font_link, (font) => {
-    const text_value = 'Dexter Pacana - ITE18-AD1 - BSCS';
+    const text_value = 'Medieval World';
     const text_properties = {
       font: font,
       size: 0.5,
