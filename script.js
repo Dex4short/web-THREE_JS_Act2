@@ -14,28 +14,28 @@ const scene = new THREE.Scene();
 const font_link = "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json";
 const fontLoader = new FontLoader();
 fontLoader.load(font_link, (font) => {
-    const text_value = 'Dexter Pacana';
-    const text_texture = new THREE.TextureLoader().load('https://dex4short.github.io/web-THREE_JS_Act2/paint_splash.png');
-    //textTexture.wrapS = THREE.RepeatWrapping;
-    //textTexture.wrapT = THREE.RepeatWrapping;
-    //textTexture.offset.set(0.5, 0.5);
-    //textTexture.repeat.set(2, 2);
+    const text_value = 'Dexter Pacana - ITE18-AD1 - BSCS';
     const text_properties = {
       font: font,
       size: 0.5,
       height: 0.2,
       curveSegments: 12,
       bevelEnabled: true,
-      bevelThickness: 0.03,
-      bevelSize: 0.02,
+      bevelThickness: 0,
+      bevelSize: 0,
       bevelOffset: 0,
-      bevelSegments: 5,
+      bevelSegments: 0,
     };
     const textGeometry = new TextGeometry(text_value, text_properties);
     textGeometry.center();
   
+    const text_texture = new THREE.TextureLoader().load('https://dex4short.github.io/web-THREE_JS_Act2/soil_texture.png');
+    text_texture.wrapS = THREE.RepeatWrapping;
+    text_texture.wrapT = THREE.RepeatWrapping;
+    text_texture.repeat.set(1, 1);
     const textMaterial = new THREE.MeshBasicMaterial({
-      map: text_texture
+      map: text_texture,
+      side: THREE.DoubleSide
     });
     const text = new THREE.Mesh(textGeometry, textMaterial);
     scene.add(text);
@@ -63,12 +63,26 @@ const background_geometry = new THREE.BoxGeometry(100, 100, 100);
 const background_mesh = new THREE.Mesh(background_geometry, background_materials);
 scene.add(background_mesh);
 /**geometry**/
+const texture = new THREE.TextureLoader().load('https://dex4short.github.io/web-THREE_JS_Act2/crate_texture.png');
 const geometry = new THREE.BoxGeometry(1,1,1);
 const material = new THREE.MeshBasicMaterial({
-  color: 0xff0000
+  map: texture
 });
 const mesh = new THREE.Mesh(geometry, material);
+mesh.position.y = -2;
 scene.add(mesh);
+/**ground**/
+const ground_texture = new THREE.TextureLoader().load('https://dex4short.github.io/web-THREE_JS_Act2/grass_texture.png');
+ground_texture.wrapS = THREE.RepeatWrapping;
+ground_texture.wrapT = THREE.RepeatWrapping;
+ground_texture.repeat.set(50, 50);
+const ground_geometry = new THREE.BoxGeometry(100,0.1,100);
+const ground_material = new THREE.MeshBasicMaterial({
+  map: ground_texture
+});
+const ground_mesh = new THREE.Mesh(ground_geometry, ground_material);
+ground_mesh.position.y = -5;
+scene.add(ground_mesh);
 
 /*Camera*/
 const sizes = {width: window.innerWidth, height: window.innerHeight};
