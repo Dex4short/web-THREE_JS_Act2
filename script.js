@@ -15,6 +15,11 @@ const font_link = "https://threejs.org/examples/fonts/helvetiker_regular.typefac
 const fontLoader = new FontLoader();
 fontLoader.load(font_link, (font) => {
     const text_value = 'Dexter Pacana';
+    const text_texture = new THREE.TextureLoader().load('https://dex4short.github.io/web-THREE_JS_Act2/paint_splash.png');
+    //textTexture.wrapS = THREE.RepeatWrapping;
+    //textTexture.wrapT = THREE.RepeatWrapping;
+    //textTexture.offset.set(0.5, 0.5);
+    //textTexture.repeat.set(2, 2);
     const text_properties = {
       font: font,
       size: 0.5,
@@ -24,33 +29,39 @@ fontLoader.load(font_link, (font) => {
       bevelThickness: 0.03,
       bevelSize: 0.02,
       bevelOffset: 0,
-      bevelSegments: 5
+      bevelSegments: 5,
     };
     const textGeometry = new TextGeometry(text_value, text_properties);
     textGeometry.center();
   
-    const textMaterial = new THREE.MeshBasicMaterial();
+    const textMaterial = new THREE.MeshBasicMaterial({
+      map: text_texture
+    });
     const text = new THREE.Mesh(textGeometry, textMaterial);
     scene.add(text);
 });
 
 /*Object*/
 /**background**/
-const image = new Image();
-image.addEventListener('load', () => {
-  const texture = new THREE.Texture(image);
-  texture.needsUpdate = true;
-  
-  const background_geometry = new THREE.BoxGeometry(10,10,10);
-  const background_material = new THREE.MeshBasicMaterial({
-    color: 0xffffff,
-    map: texture,
-    side: THREE.BackSide
-  });
-  const background_mesh = new THREE.Mesh(background_geometry, background_material);
-  scene.add(background_mesh);
-});
-image.src = 'https://dex4short.github.io/web-THREE_JS_Act2/background.png';
+const background_textures = [
+  new THREE.TextureLoader().load('https://dex4short.github.io/web-THREE_JS_Act2/background_right.png'),
+  new THREE.TextureLoader().load('https://dex4short.github.io/web-THREE_JS_Act2/background_left.png'),
+  new THREE.TextureLoader().load('https://dex4short.github.io/web-THREE_JS_Act2/background_top.png'),
+  new THREE.TextureLoader().load('https://dex4short.github.io/web-THREE_JS_Act2/background_bottom.png'),
+  new THREE.TextureLoader().load('https://dex4short.github.io/web-THREE_JS_Act2/background_front.png'),
+  new THREE.TextureLoader().load('https://dex4short.github.io/web-THREE_JS_Act2/background_back.png'),
+];
+const background_materials = [
+    new THREE.MeshBasicMaterial({map: background_textures[0], side: THREE.BackSide}),
+    new THREE.MeshBasicMaterial({map: background_textures[1], side: THREE.BackSide}),
+    new THREE.MeshBasicMaterial({map: background_textures[2], side: THREE.BackSide}),
+    new THREE.MeshBasicMaterial({map: background_textures[3], side: THREE.BackSide}),
+    new THREE.MeshBasicMaterial({map: background_textures[4], side: THREE.BackSide}),
+    new THREE.MeshBasicMaterial({map: background_textures[5], side: THREE.BackSide}),
+]
+const background_geometry = new THREE.BoxGeometry(100, 100, 100);
+const background_mesh = new THREE.Mesh(background_geometry, background_materials);
+scene.add(background_mesh);
 /**geometry**/
 const geometry = new THREE.BoxGeometry(1,1,1);
 const material = new THREE.MeshBasicMaterial({
