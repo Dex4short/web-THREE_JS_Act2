@@ -1,6 +1,8 @@
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.0/build/three.module.js";
-import { FontLoader } from "https://cdn.jsdelivr.net/npm/three@0.152.0/examples/jsm/loaders/FontLoader.js";
-import { TextGeometry } from "https://cdn.jsdelivr.net/npm/three@0.152.0/examples/jsm/geometries/TextGeometry.js";
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.20/+esm';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 /*Canvas*/
 const canvas = document.querySelector('canvas.webgl');
@@ -11,7 +13,7 @@ const scene = new THREE.Scene();
 /*Font*/
 const fontLoader = new FontLoader();
 fontLoader.load(
-  "https://cdn.jsdelivr.net/npm/three@0.152.0/examples/fonts/helvetiker_regular.typeface.json",
+  "./examples/fonts/helvetiker_regular.typeface.json",
   (font) => {
     const textGeometry = new TextGeometry(
       'Hello Three.js',
@@ -54,6 +56,11 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 renderer.render(scene, camera);
 
+// Controls
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+
+
 /*Resize Listener*/
 window.addEventListener('resize', () => {
   sizes.width = window.innerWidth;
@@ -66,6 +73,14 @@ window.addEventListener('resize', () => {
   renderer.setSize(sizes.width, sizes.height);
   renderer.render(scene, camera);
 });
+
+/*Animation*/
+const tick = () => {
+    renderer.render(scene, camera);
+    controls.update();
+    window.requestAnimationFrame(tick);
+};
+tick();
 
 window.addEventListener('dblclick', () => {
   const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
@@ -89,3 +104,18 @@ window.addEventListener('dblclick', () => {
 
 /*GUI*/
 const gui = new dat.GUI();
+gui.add(mesh.position, 'x').min(- 3).max(3).step(0.01).name('x:');
+gui.add(mesh.position, 'y').min(- 3).max(3).step(0.01).name('y:');
+gui.add(mesh.position, 'z').min(- 3).max(3).step(0.01).name('z:');
+gui.add(mesh.rotation, 'x').min(- 3).max(3).step(0.01).name('rotation x:');
+gui.add(mesh.rotation, 'y').min(- 3).max(3).step(0.01).name('rotation y:');
+gui.add(mesh.rotation, 'z').min(- 3).max(3).step(0.01).name('rotation z:');
+gui.add(mesh.scale, 'x').min(0).max(5).step(0.01).name('scale x:');
+gui.add(mesh.scale, 'y').min(0).max(5).step(0.01).name('scale y:');
+gui.add(mesh.scale, 'z').min(0).max(5).step(0.01).name('scale z:');
+gui.add(mesh, 'visible');
+gui.add(material, 'wireframe');
+const parameters = { color: 0xff0000 };
+gui.addColor(parameters, 'color').onChange(() => {
+  material.color.set(parameters.color)
+})
