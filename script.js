@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.20/+esm';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-import background_image from 'https://cors-anywhere.herokuapp.com/https://dex4short.github.io/web-THREE_JS_Act2/background.png';
+
 
 /*Canvas*/
 const canvas = document.querySelector('canvas.webgl');
@@ -41,16 +41,17 @@ const image = new Image();
 image.addEventListener('load', () => {
   const texture = new THREE.Texture(image);
   texture.needsUpdate = true;
+  
   const background_geometry = new THREE.BoxGeometry(10,10,10);
   const background_material = new THREE.MeshBasicMaterial({
-    //color: 0x87CEEB,
+    color: 0xffffff,
     map: texture,
     side: THREE.BackSide
   });
   const background_mesh = new THREE.Mesh(background_geometry, background_material);
   scene.add(background_mesh);
 });
-image.src = background_image;
+image.src = 'https://dex4short.github.io/web-THREE_JS_Act2/background.png';
 /**geometry**/
 const geometry = new THREE.BoxGeometry(1,1,1);
 const material = new THREE.MeshBasicMaterial({
