@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.20/+esm';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import background_image from 'https://cors-anywhere.herokuapp.com/https://dex4short.github.io/web-THREE_JS_Act2/background.png';
 
 /*Canvas*/
 const canvas = document.querySelector('canvas.webgl');
@@ -11,31 +12,46 @@ const canvas = document.querySelector('canvas.webgl');
 const scene = new THREE.Scene();
 
 /*Font*/
+const font_link = "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json";
 const fontLoader = new FontLoader();
-fontLoader.load(
-  "./examples/fonts/helvetiker_regular.typeface.json",
-  (font) => {
-    const textGeometry = new TextGeometry(
-      'Hello Three.js',
-       {
-       font: font,
-       size: 0.5,
-       height: 0.2,
-       curveSegments: 12,
-       bevelEnabled: true,
-       bevelThickness: 0.03,
-       bevelSize: 0.02,
-       bevelOffset: 0,
-       bevelSegments: 5
-       }
-    );
+fontLoader.load(font_link, (font) => {
+    const text_value = 'Dexter Pacana';
+    const text_properties = {
+      font: font,
+      size: 0.5,
+      height: 0.2,
+      curveSegments: 12,
+      bevelEnabled: true,
+      bevelThickness: 0.03,
+      bevelSize: 0.02,
+      bevelOffset: 0,
+      bevelSegments: 5
+    };
+    const textGeometry = new TextGeometry(text_value, text_properties);
+    textGeometry.center();
+  
     const textMaterial = new THREE.MeshBasicMaterial();
     const text = new THREE.Mesh(textGeometry, textMaterial);
     scene.add(text);
-  }
-);
+});
 
 /*Object*/
+/**background**/
+const image = new Image();
+image.addEventListener('load', () => {
+  const texture = new THREE.Texture(image);
+  texture.needsUpdate = true;
+  const background_geometry = new THREE.BoxGeometry(10,10,10);
+  const background_material = new THREE.MeshBasicMaterial({
+    //color: 0x87CEEB,
+    map: texture,
+    side: THREE.BackSide
+  });
+  const background_mesh = new THREE.Mesh(background_geometry, background_material);
+  scene.add(background_mesh);
+});
+image.src = background_image;
+/**geometry**/
 const geometry = new THREE.BoxGeometry(1,1,1);
 const material = new THREE.MeshBasicMaterial({
   color: 0xff0000
@@ -59,7 +75,6 @@ renderer.render(scene, camera);
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
-
 
 /*Resize Listener*/
 window.addEventListener('resize', () => {
