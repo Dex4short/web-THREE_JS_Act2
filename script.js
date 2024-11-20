@@ -11,7 +11,7 @@ const scene = new THREE.Scene();
 /*Font*/
 const fontLoader = new FontLoader();
 fontLoader.load(
-  './fonts/helvetiker_regular.typeface.json',
+  "https://cdn.jsdelivr.net/npm/three@0.152.0/examples/fonts/helvetiker_regular.typeface.json",
   (font) => {
     const textGeometry = new TextGeometry(
       'Hello Three.js',
